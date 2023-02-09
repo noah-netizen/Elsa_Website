@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Follow the Heart</title>
+  </head>
+  <body>
+    <div id="game-container">
+      <div id="heart"></div>
+      <div id="cat"></div>
+      <div id="chocolate1"></div>
+      <div id="chocolate2"></div>
+      <div id="chocolate3"></div>
+      <div id="poop"></div>
+    </div>
+    <div id="score-board"></div>
+    <div id="game-over"></div>
+    <div id="love-poem"></div>
+  </body>
+  <script src="game.js"></script>
+</html>
+
+<style>
+
+body {
+  background-color: pink;
+}
+
+#game-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-image: url(border-gif.gif);
+  background-size: cover;
+}
+
+#heart {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  background-image: url(heart-gif.gif);
+  background-size: cover;
+}
+
+#cat {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-image: url(cat-image.png);
+  background-size: cover;
+}
+
+#chocolate1, #chocolate2, #chocolate3 {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  background-image: url(chocolate-image.png);
+  background-size: cover;
+}
+
+#poop {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  background-image: url(poop-image.png);
+  background-size: cover;
+}
+
+#score-board {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 20px;
+  color: black;
+}
+
+#game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 20px;
+  color: black;
+  display: none;
+}
+
+#love-poem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 20px;
+  color: black;
+  display: none;
+}
+  
+</style>
+
+<script>
+
+// Set up variables for the game
+let heartX = 50;
+let heartY = 50;
+let catX = 25;
+let catY = 25;
+let level = 1;
+let score = 0;
+let chocolates = [];
+let barriers = [];
+
+// Set up the chocolates array
+for (let i = 0; i < 3; i++) {
+  let chocolateX = Math.floor(Math.random() * window.innerWidth);
+  let chocolateY = Math.random() * window.innerHeight;
+  chocolates.push({ x: chocolateX, y: chocolateY });
+}
+
+// Set up the barriers array
+for (let i = 0; i < level; i++) {
+  let barrierX = Math.floor(Math.random() * window.innerWidth);
+  let barrierY = Math.random() * window.innerHeight;
+  barriers.push({ x: barrierX, y: barrierY });
+}
+
+// Move the heart randomly
+setInterval(() => {
+  heartX += Math.floor(Math.random() * 10 - 5);
+  heartY += Math.floor(Math.random() * 10 - 5);
+}, 100);
+
+// Check if the cat has hit the heart
+const checkCollision = () => {
+  if (catX >= heartX - 50 && catX <= heartX + 50 && catY >= heartY - 50 && catY <= heartY + 50) {
+    alert("You won this level! On to the next one...");
+    level++;
+    score++;
+    catX = 25;
+    catY = 25;
+    heartX = 50;
+    heartY = 50;
+    chocolates = [];
+    for (let i = 0; i < 3; i++) {
+      let chocolateX = Math.floor(Math.random() * window.innerWidth);
+      let chocolateY = Math.random() * window.innerHeight;
+      chocolates.push({ x: chocolateX, y: chocolateY });
+    }
+    barriers = [];
+    for (let i = 0; i < level; i++) {
+      let barrierX = Math.floor(Math.random() * window.innerWidth);
+      let barrierY = Math.random() * window.innerHeight;
+      barriers.push({ x: barrierX, y: barrierY });
+    }
+  }
+};
+
+// Check if the cat has hit a chocolate
+const checkChocolateCollision = () => {
+  chocolates.forEach((chocolate, index) => {
+    if (catX >= chocolate.x - 50 && catX <= chocolate.x + 50 && catY >= chocolate.y - 50 && catY <= chocolate.y + 50) {
+      chocolates.splice(index, 1);
+      score++;
+      showLovePoem();
+    }
+  });
+};
+
+// Check if the cat has hit a barrier
+const checkBarrierCollision = () => {
+  barriers.forEach((barrier, index) => {
+    if (catX >= barrier.x - 50 && catX <= barrier.x + 50 && catY >= barrier.y - 50 && catY <= barrier.y + 50) {
+      barriers.splice(index, 1);
+      catX = 25;
+     
+
+</script>
